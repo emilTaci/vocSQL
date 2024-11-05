@@ -4,7 +4,7 @@ use tokio_postgres::{Error, NoTls};
 pub async fn connect_and_setup() -> Result<(), Error> {
     // Connect to the database
     let (client, connection) = tokio_postgres::connect(
-        "host=localhost user=postgres password=yourpassword dbname=yourdb",
+        "host=localhost user=emilt password=123456 dbname=vocapp",
         NoTls,
     )
     .await?;
