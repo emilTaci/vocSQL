@@ -1,7 +1,8 @@
-mod db;
+use std::net::TcpListener;
+use voc_sql::run;
+
 #[tokio::main]
-async fn main() {
-    if let Err(e) = db::connect_and_setup().await {
-        println!("Error: {}", e);
-    }
+async fn main() -> std::io::Result<()> {
+    let listener = TcpListener::bind("127.0.0.1:8000").expect("Failed to bind random port");
+    run(listener)?.await
 }
