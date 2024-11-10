@@ -22,7 +22,7 @@ async fn subscribe_returns_201_on_success() {
         .body(
             r#"{
               "name": "Emil",
-              "email": "emilt@azercell.com"
+              "email": "emilt@randommail.com"
             }"#,
         )
         .send()
@@ -36,7 +36,7 @@ async fn subscribe_returns_201_on_success() {
         .await
         .expect("Failed to fetch saved subscription.");
 
-    assert_eq!(saved.email, "emilt@azercell.com");
+    assert_eq!(saved.email, "emilt@randommail.com");
     assert_eq!(saved.name, "Emil");
 }
 
