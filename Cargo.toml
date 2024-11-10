@@ -8,12 +8,20 @@ path = "src/lib.rs"
 
 [[bin]]
 path = "src/main.rs"
-name = "zero2prod"
+name = "voc_sql"
 
 [dependencies]
 actix-web = "4.9.0"
 tokio = { version = "1", features = ["full"] }
-tokio-postgres = "0.7.12"
+serde = { version = "1.0", features = ["derive"] }
+sqlx = { version = "0.6", default-features = false, features = ["runtime-tokio-rustls", "macros", "postgres", "uuid", "chrono", "migrate"] }
+config = "0.11"
+syn = "2"
+chrono = "0.4.15"
+uuid = { version = "0.8", features = ["v4"] }
+env_logger = "0.9"
+log = "0.4"
+
 
 [dev-dependencies]
 reqwest = "0.11"
