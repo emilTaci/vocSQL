@@ -4,19 +4,18 @@ name: Trigger auto deployment for voc-sql
 on:
   # Automatically trigger it when detected changes in repo
   push:
-    branches: 
-      [ master ]
+    branches: [master]
     paths:
-    - '**'
-    - '.github/workflows/voc-sql-AutoDeployTrigger-2acdda89-daf3-464a-bd78-d0319b1be56e.yml'
+      - "**"
+      - ".github/workflows/voc-sql-AutoDeployTrigger-2acdda89-daf3-464a-bd78-d0319b1be56e.yml"
 
-  # Allow manual trigger 
-  workflow_dispatch:      
+  # Allow manual trigger
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    permissions: 
+    permissions:
       id-token: write #This is required for requesting the OIDC JWT Token
       contents: read #Required when GH token is used to authenticate with private repo
 
@@ -34,15 +33,13 @@ jobs:
       - name: Build and push container image to registry
         uses: azure/container-apps-deploy-action@v2
         with:
-          appSourcePath: ${{ github.workspace }}Dockerfile
-          _dockerfilePathKey_: _dockerfilePath_
+          appSourcePath: ${{ github.workspace }}
+          dockerfilePath: "./Dockerfile"
           registryUrl: vocrustreg.azurecr.io
           registryUsername: ${{ secrets.VOCSQL_REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.VOCSQL_REGISTRY_PASSWORD }}
           containerAppName: voc-sql
           resourceGroup: voc-sql
           imageToBuild: vocrustreg.azurecr.io/voc-sql:${{ github.sha }}
-          _buildArgumentsKey_: |
-            _buildArgumentsValues_
-
-
+          buildArguments: |
+            rust_version=1.82.0
