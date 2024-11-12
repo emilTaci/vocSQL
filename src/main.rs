@@ -16,6 +16,11 @@ async fn main() -> std::io::Result<()> {
         .await
         .expect("Failed to connect to Postgres.");
 
+    sqlx::migrate!("./migrations")
+        .run(&connection_pool)
+        .await
+        .expect("Failed to migrate the database");
+
     let address = format!(
         "{}:{}",
         configuration.application.host, configuration.application.port
