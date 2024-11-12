@@ -1,5 +1,4 @@
 use once_cell::sync::Lazy;
-use secrecy::ExposeSecret;
 use sqlx::PgPool;
 use std::net::TcpListener;
 use voc_sql::{
@@ -42,7 +41,7 @@ async fn spawn_app() -> String {
     let port = listener.local_addr().unwrap().port();
 
     let configuration = get_configuration().expect("Failed to read configuration.");
-    let pool = PgPool::connect(&configuration.database.connection_string().expose_secret())
+    let pool = PgPool::connect_with(configuration.database.with_db())
         .await
         .expect("Failed to connect to Postgres.");
 

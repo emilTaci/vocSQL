@@ -8,3 +8,5 @@ database:
   username: "emilt"
   password: "123456"
   database_name: "vocsql"
+  require_ssl: false
+
