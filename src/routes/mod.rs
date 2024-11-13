@@ -10,9 +10,9 @@ pub struct Response {
     pub message: String,
 }
 
-pub fn create_response(status: &str, message: &str) -> Response {
+pub fn create_response<S: Into<String>, M: Into<String>>(status: S, message: M) -> Response {
     Response {
-        status: status.to_string(),
-        message: message.to_string(),
+        status: status.into(),
+        message: message.into(),
     }
 }
