@@ -4,6 +4,7 @@ use std::net::TcpListener;
 use uuid::Uuid;
 use voc_sql::{
     configuration::{get_configuration, DatabaseSettings},
+    email_client::EmailClient,
     startup::run,
     telemetry::{get_subscriber, init_subscriber},
 };
@@ -105,7 +106,19 @@ async fn spawn_app() -> TestApp {
     configuration.database.database_name = Uuid::new_v4().to_string();
     let pool = configure_database(&configuration.database).await;
 
-    let server = run(listener, pool.clone()).expect("Failed to bind address");
+    let timeout = configuration.email_client.timeout();
+    let sender_email = configuration
+        .email_client
+        .sender()
+        .expect("Invalid sender email address.");
+    let email_client = EmailClient::new(
+        configuration.email_client.base_url,
+        sender_email,
+        configuration.email_client.authorization_token,
+        timeout,
+    );
+
+    let server = run(listener, pool.clone(), email_client).expect("Failed to bind address");
     let address: String = format!("http://127.0.0.1:{}", port);
 
     let _ = tokio::spawn(server);

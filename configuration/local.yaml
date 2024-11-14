@@ -10,3 +10,8 @@ database:
   database_name: "vocsql"
   require_ssl: false
 
+email_client:
+  base_url: "localhost"
+  sender: "test@gmail.com"
+  authorization_token: "123456"
+  timeout_milliseconds: 10000

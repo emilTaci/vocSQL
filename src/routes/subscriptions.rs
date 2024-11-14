@@ -25,10 +25,10 @@ impl TryFrom<SubscriberInput> for SubscriberInfo {
 
 #[tracing::instrument(
     name = "Saving new subscriber details in the database",
-    skip(user_json, pool)
+    skip(subscriber_details, pool)
 )]
 pub async fn insert_subscriber(
-    user_json: &SubscriberInfo,
+    subscriber_details: &SubscriberInfo,
     pool: &PgPool,
 ) -> Result<(), sqlx::Error> {
     sqlx::query!(
@@ -36,8 +36,8 @@ pub async fn insert_subscriber(
             INSERT INTO subscriptions (email, name, subscribed_at)
             VALUES ($1, $2, $3)
         "#,
-        user_json.email.as_ref(),
-        user_json.name.as_ref(),
+        subscriber_details.email.as_ref(),
+        subscriber_details.name.as_ref(),
         Utc::now()
     )
     .execute(pool)
